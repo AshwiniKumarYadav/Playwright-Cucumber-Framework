@@ -1,0 +1,51 @@
+name: Playwright Cucumber tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  api-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Run API scenarios
+        run: npm run test:api
+      - name: Upload API report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-cucumber-report
+          path: reports/
+          if-no-files-found: warn
+
+  ui-tests:
+    if: ${{ vars.RUN_UI_TESTS == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Run UI scenarios
+        run: npm run test:ui
+        env:
+          UI_USERNAME: ${{ secrets.UI_USERNAME }}
+          UI_PASSWORD: ${{ secrets.UI_PASSWORD }}
+      - name: Upload UI report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-cucumber-report
+          path: reports/
+          if-no-files-found: warn

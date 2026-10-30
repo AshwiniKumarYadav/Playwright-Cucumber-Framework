@@ -1,0 +1,7 @@
+{
+  "validUserTemplate": {
+    "name": "Example Automation User",
+    "username": "example-qa-user",
+    "email": "example@example.test"
+  }
+}

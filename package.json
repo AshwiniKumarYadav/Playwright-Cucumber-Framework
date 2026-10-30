@@ -1,0 +1,38 @@
+{
+  "name": "enterprise-playwright-cucumber-framework",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Scenario-isolated UI and API automation with Playwright, TypeScript, and Cucumber.",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "clean": "node scripts/clean.cjs all",
+    "clean:reports": "node scripts/clean.cjs current",
+    "test": "npm run clean:reports && node scripts/run-tests.cjs",
+    "test:ui": "npm run clean:reports && node scripts/run-tests.cjs --tags @ui",
+    "test:api": "npm run clean:reports && node scripts/run-tests.cjs --tags @api",
+    "test:chain": "npm run clean:reports && node scripts/run-tests.cjs --tags \"@api and @chain\"",
+    "test:headed": "cross-env HEADLESS=false npm run test:ui",
+    "test:chromium": "cross-env BROWSER=chromium npm test",
+    "test:firefox": "cross-env BROWSER=firefox npm test",
+    "test:webkit": "cross-env BROWSER=webkit npm test",
+    "test:all-browsers": "cross-env BROWSER=all npm test",
+    "test:parallel": "cross-env WORKERS=4 npm test",
+    "report": "node scripts/generate-report.cjs",
+    "report:open": "node scripts/open-report.cjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@cucumber/cucumber": "^13.3.0",
+    "@playwright/test": "^1.52.0",
+    "ajv": "^8.17.1",
+    "@types/node": "^22.15.0",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.5.0",
+    "multiple-cucumber-html-reporter": "^3.9.2",
+    "playwright": "^1.52.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.3"
+  }
+}
